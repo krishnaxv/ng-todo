@@ -1,0 +1,43 @@
+<loader is-loading="todo.isLoading"></loader>
+<div class="page-content home" ng-if="!todo.isLoading">
+  <!-- <p class="mdl-typography--headline"></p> -->
+  <div class="mdl-grid mdl-grid--no-spacing todo">
+    <div class="mdl-cell mdl-cell--12-col">
+      <form ng-submit="todo.addNewTodo()" class="todo--new">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="todo-new" autocomplete="off" ng-model="todo.newTodo">
+          <label class="mdl-textfield__label" for="todo-new">Add new Todo</label>
+        </div>
+      </form>
+    </div>
+    <div class="mdl-cell mdl-cell--12-col todo__wrapper">
+      <p class="todo__remaining">
+        <span ng-show="todo.getRemainingTodo().length > 0">You have {{todo.getRemainingTodo().length}} of {{todo.list.length}} remaining todo.</span>
+        <span ng-show="todo.getRemainingTodo().length == 0">You are super productive!</span>
+      </p>
+      <ul class="mdl-list todo__list">
+        <li class="mdl-list__item todo__item" ng-repeat="item in todo.list">
+          <span class="mdl-list__item-primary-content">
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="todo-{{$index}}" mdl-upgrade>
+              <input type="checkbox" id="todo-{{$index}}" class="mdl-checkbox__input" ng-model="item.isComplete" />
+            </label>
+            <span ng-dblclick="showEditField = true" ng-hide="showEditField">{{item.title}}</span>
+            <form ng-submit="showEditField = false">
+              <div class="mdl-textfield mdl-js-textfield" ng-show="showEditField" mdl-upgrade>
+                <input type="text" id="todo-{{$index}}-edit" class="mdl-textfield__input" ng-model="item.title" ng-blur="showEditField = false" todo-autofocus="showEditField" />
+                <label class="mdl-textfield__label" for="todo-{{$index}}-edit">Edit Todo</label>
+              </div>
+            </form>
+          </span>
+          <span class="mdl-list__item-secondary-content todo__item--action-wrapper">
+            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons" ng-click="showEditField = true">edit</i></a>
+            <a class="mdl-list__item-secondary-action" href="#" ng-click="todo.removeTodo(item, $index)"><i class="material-icons">delete_sweep</i></a>
+          </span>
+        </li>
+        <li class="mdl-list__item" ng-if="todo.list.length == 0">
+          <span>You don't have any task to do!</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
